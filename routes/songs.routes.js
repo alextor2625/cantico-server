@@ -33,8 +33,6 @@ const fetchVideos = async (ids) => {
           return;
         }
 
-        // console.log('Curl command output:', stdout);
-
         if (Number(stdout) === 0) {
           videos.push(id);
         }
@@ -44,13 +42,8 @@ const fetchVideos = async (ids) => {
     });
   };
 
-  for (const id of ids) {
-    try {
-      await executeCurlCommand(id);
-    } catch (error) {
-      console.error("Error fetching videos:", error);
-    }
-  }
+  // Ejecutamos todos los comandos en paralelo
+  await Promise.all(ids.map(executeCurlCommand));
 
   return videos;
 };
